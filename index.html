@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiration Seeds</title>
+    <meta name="description" content="Inspiration Seeds: A generative framework that shifts image generation from final execution to exploratory ideation. Given two input images, our model produces diverse, visually coherent compositions that reveal latent relationships between inputs, without relying on user-specified text prompts.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="" property="og:url">
+    <meta content="Inspiration Seeds: Learning Non-Literal Visual Combinations for Generative Exploration" property="og:title">
+    <meta content="A generative framework that shifts image generation from final execution to exploratory ideation, producing diverse visual compositions that reveal latent relationships between input images." property="og:description">
+    <meta content="static/figures/teaser.jpg" property="og:image">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Inspiration Seeds: Learning Non-Literal Visual Combinations for Generative Exploration">
+    <meta name="twitter:image:src" content="static/figures/teaser.jpg">
+
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main.css">
+    <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ]
+    });
+  });
+</script>
+    <link rel="icon" href="static/images/favicon.ico">
+</head>
+
+<body>
+
+    <!-- Title Page -->
+    <div class="container blog" id="first-content" style="background-color: #E0E4E6;">
+        <div class="blog-title">
+            <div class="blog-intro">
+                <div>
+                    <h1 class="title">Inspiration Seeds:<br> Learning Non-Literal Visual Combinations for Generative Exploration</h1>
+                    <p class="abstract">
+                        Inspiration Seeds is a generative system for supporting <u><b>visual exploration.</b></u>
+Given two images, it generates multiple visual combinations that reveal non-obvious connections between them.
+
+The process is entirely visual and does not rely on text prompts, making it useful at early stages of creative work when goals are still unclear.
+
+Rather than executing a predefined idea, the system supports exploration and discovery of new visual directions.
+                    </p>
+                    <!-- <p class="abstract">
+                        Inspiration Seeds supports visual exploration by surfacing non-trivial connections between images.
+It enables discovery before ideas can be put into words.
+                    </p> -->
+
+                    <div class="info">
+                        <div>
+                            <a href="#" class="button icon" style="background-color: rgba(255, 255, 255, 0.3)">Paper <i class="fa-solid fa-book-open"></i></a>
+                            <a href="https://github.com/inspirationseedspaper/InspirationSeeds" class="button icon" style="background-color: rgba(255, 255, 255, 0.3)">Code <i class="fa-solid fa-code"></i></a>
+                            <a href="static/viewer/index.html" target="_blank" rel="noopener" class="button icon" style="background-color: rgba(255, 255, 255, 0.3)">Interactive Demo <i class="fa-solid fa-play"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-cover viewer-embed">
+                <div class="canvas-demo-container">
+                    <div class="canvas-wrapper">
+                        <canvas id="demo-canvas"></canvas>
+                        <div class="canvas-controls">
+                            <button id="zoom-in-btn" class="canvas-control-btn" title="Zoom in">+</button>
+                            <button id="zoom-out-btn" class="canvas-control-btn" title="Zoom out">−</button>
+                            <button id="reset-btn" class="canvas-control-btn" title="Reset view">↺</button>
+                        </div>
+                    </div>
+                    <div class="image-selector-section">
+                        <h3>Select images:</h3>
+                        <div id="image-selector">
+                            <img src="static/figures/demo-images/food1.jpg" alt="Food" class="selector-image" data-image-name="food1">
+                            <img src="static/figures/demo-images/nature2.jpg" alt="Nature" class="selector-image" data-image-name="nature2">
+                            <img src="static/figures/demo-images/fashion5.jpg" alt="Fashion" class="selector-image" data-image-name="fashion5">
+                            <img src="static/figures/demo-images/arch1.jpg" alt="Architecture" class="selector-image" data-image-name="arch1">
+                            <img src="static/figures/demo-images/sea4.jpg" alt="Sea" class="selector-image" data-image-name="sea4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction + Key Insights -->
+    <div class="container blog main first">
+        <h2>🔍 What is visual exploration? </h2>
+        <p class="text">
+            Ideas rarely arrive fully formed. 
+            Exploration and inspiration are central to the design process: creators sketch, assemble inspiration boards, and gather references. 
+            This kind of exploration is open-ended and associative.<br>
+            As creators travel through visual concepts, unexpected connections can emerge, sparking new ideas and helping guide creative direction.
+        </p>
+        <h2>👁️ Why is visual exploration challenging? </h2>
+        <p class="text">
+            Early exploration is open-ended and intuitive. The connections that lead to new ideas are often subtle and non-obvious, and recognizing them typically requires a trained or creative eye. Thinking in terms of abstract visual attributes — and imagining how they might combine — is inherently challenging.
+        </p>
+        
+
+        <h2>🧩 How can our system help? </h2>
+        <p class="text">
+           Inspiration Seeds supports visual exploration through a purely visual interaction. Given two images, it generates multiple non-trivial combinations that surface hidden visual relationships, without requiring text prompts or predefined instructions.
+        </p>
+
+        <img src="static/figures/canvases/canvas_export_tree.jpg" alt="Comparison of trivial vs non-trivial combinations" style="width: 100%; height: auto;">
+        <br>
+    <h2>🌱 What makes these visual connections different?</h2>
+        <p class="text">
+           When exploring visually, the goal is not to apply a specific edit, but to discover relationships that are not obvious in advance. This is why many existing image generation models struggle in this setting.<br>
+           For example, models like Nano Banana are designed to execute explicit edits, ones that often appear in their training data, such as inserting one object into another, or replacing a visible part. As a result, when asked to combine images, they tend to fall back on these literal operations — even when prompted to be "creative":
+        </p>
+        <div class="seed-inputs">
+            <div style="flex: 0.667;">
+                <div class="seed-label">Input A</div>
+                <img src="static/figures/non-trivial-example/leaf.jpg" alt="Leaf input">
+            </div>
+            <span class="plus">+</span>
+            <div style="flex: 0.75;">
+                <div class="seed-label">Input B</div>
+                <img src="static/figures/non-trivial-example/woman.jpg" alt="Portrait input">
+            </div>
+            <span class="plus">→</span>
+            <div style="flex: 0.673;">
+                <div class="seed-label">Nano Banana Output</div>
+                <img src="static/figures/non-trivial-example/nano-banana.png" alt="Nano Banana output">
+            </div>
+            <div style="flex: 1;">
+                <div class="seed-label">Ours</div>
+                <img src="static/figures/non-trivial-example/ours.jpg" alt="Our output">
+            </div>
+        </div>
+        <p class="text">
+            Given a leaf and a portrait, Nano Banana in this case produced a trivial combination — replacing the earring with the leaf, even when prompted to produce a non-trivial, creative combination.
+            Our method surfaces deeper connections: the leaf's decay pattern appears in the skin, and its aged quality carries over to the subject. This may inspire new ideas as part of an exploratory process.
+        </p>
+
+          
+
+        <!-- <fieldset class="insights-box">
+            <legend>Key Insights</legend>
+            <ul>
+                <li><b>Visual exploration without text.</b> Our method surfaces non-trivial visual connections from image pairs without requiring text prompts, supporting early-stage creative ideation where ideas are still vague and primarily visual.</li>
+                <li><b>Implicit decomposition via CLIP SAEs.</b> We decompose images into visual aspects using CLIP Sparse Autoencoders, enabling automatic training data generation without predefined relationship categories or costly optimization.</li>
+                <li><b>Diverse combinations from varying seeds.</b> Sampling with different random seeds yields varied visual combinations, each surfacing different relationships between the inputs, supporting open-ended exploration rather than converging on a single output.</li>
+            </ul>
+        </fieldset> -->
+    </div>
+
+    <!-- Method Section -->
+    <div class="container blog main gray">
+        <br>
+        <h1>How Does it Work?</h1>
+        <p class="text">
+            Given two images $(I_A, I_B)$, our goal is to learn the mapping $f_\theta(I_A, I_B) \rightarrow I_{\text{comb}}$.
+            <br>A central challenge is obtaining suitable training data: triplets of $(I_A, I_B, I_{\text{comb}})$, where the combination reflects a meaningful visual relationship rather than a superficial one.
+Our key insight is to invert this problem: instead of searching for image pairs that combine well, we start from visually rich images and decompose them into two constituent visual aspects.
+The original image then serves as a ground-truth combination, providing natural supervision for training.<br>
+            Now our task is reduced into learning to decompose a given image in a non-constrained way.
+        </p>
+       <h2 class="title is-2">Image Decomposition Pipeline.</h2>
+        <p class="text">
+  (1) We formulate decomposition as controlled editing in CLIP latent space, where linear directions correspond to meaningful visual transformations.<br>
+(2) We leverage CLIP Sparse Autoencoders (SAEs) to find editing directions, which expose interpretable visual attributes from CLIP embeddings.<br>
+(3) We separate groups of similar attributes by clustering the top-k most active SAE features into two groups.<br>
+(4) We define the editing direction as the difference between the two groups’ centroids.<br>
+(5) The resulting directions isolate distinct visual qualities and are used to construct training pairs for our combination model.<br>
+
+        </p>
+       
+    </div>
+
+    <!-- Pipeline Figure -->
+    <div class="container blog extra-large gray">
+        <img src="static/figures/method_transparent.png" alt="Method overview showing CLIP SAE decomposition pipeline">
+       
+    </div>
+    <div class="container blog main gray">
+        
+        <p class="text">
+            Below are some examples of the resulting decompositions:
+        </p>
+      
+      
+      <div class="seed-grid">
+  <!-- labels row -->
+  <div class="seed-label" style="grid-column: 1">\(I_A\)</div>
+  <div class="seed-label" style="grid-column: 3">\(I_{comb}\)</div>
+  <div class="seed-label" style="grid-column: 5;">\(I_B\)</div>
+
+
+  <!-- images row -->
+  <img src="static/figures/decompositions/a.jpeg" alt="IA 1">
+  <img src="static/figures/decompositions/ref_fdef3c66-030c-4690-a1c8-a35b1ab2d530_edited_step_-0.5.jpeg" alt="IB">
+  <img src="static/figures/decompositions/ref_fdef3c66-030c-4690-a1c8-a35b1ab2d530_edited_step_0.jpeg" alt="IA 2">
+  <img src="static/figures/decompositions/ref_fdef3c66-030c-4690-a1c8-a35b1ab2d530_edited_step_0.5.jpeg" alt="Icomb 1">
+  <img src="static/figures/decompositions/ref_fdef3c66-030c-4690-a1c8-a35b1ab2d530_edited_step_1.jpeg" alt="Icomb 2">
+
+  <!-- images row -->
+  <img src="static/figures/decompositions/ref_matisse__1_edited_step_-1.jpeg" alt="IA 1">
+  <img src="static/figures/decompositions/ref_matisse__1_edited_step_-0.5.jpeg" alt="IB">
+  <img src="static/figures/decompositions/ref_matisse__1_edited_step_0.jpeg" alt="IA 2">
+  <img src="static/figures/decompositions/ref_matisse__1_edited_step_0.5.jpeg" alt="Icomb 1">
+  <img src="static/figures/decompositions/ref_matisse__1_edited_step_1.jpeg" alt="Icomb 2">
+
+  <!-- images row -->
+  <img src="static/figures/decompositions/ref_18_edited_step_-1.jpeg" alt="IA 1">
+  <img src="static/figures/decompositions/ref_18_edited_step_-0.5.jpeg" alt="IB">
+  <img src="static/figures/decompositions/ref_18_edited_step_0.jpeg" alt="IA 2">
+  <img src="static/figures/decompositions/ref_18_edited_step_0.5.jpeg" alt="Icomb 1">
+  <img src="static/figures/decompositions/ref_18_edited_step_1.jpeg" alt="Icomb 2">
+  
+</div>
+
+        <p class="text">
+            
+            We build a synthetic image pool of diverse, interesting images, from which we produce 2085 triplets $(I_A,I_B,I_{comb})$ using our decomposition pipeline.<br>
+            Using this set we fine-tune Flux.1 Kontex to perform the inverse task: given two images, produce a combination that captures visual aspects of both.
+
+        </p>
+
+    </div>
+
+    <!-- Visual Exploration Canvas -->
+    <div class="container blog main">
+        <h1>Visual Exploration Canvas</h1>
+        <p class="text">
+            Some examples of exploration with our method are shown below:
+        </p>
+       
+    </div>
+    
+
+    <!-- Canvas Carousel -->
+    <div class="container blog extra-extra-large carousel" id="canvas-carousel">
+        <div class="slide-menu">
+            <ul class="dots">
+                <li class="dot active"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+            </ul>
+        </div>
+
+        <div class="slide-content active">
+            <img src="static/figures/canvases/canvas_export2.jpg" alt="Exploration canvas 1">
+        </div>
+        <div class="slide-content">
+            <img src="static/figures/canvases/canvas_export4.jpg" alt="Exploration canvas 2">
+        </div>
+        <div class="slide-content">
+            <img src="static/figures/canvases/canvas_export5.jpg" alt="Exploration canvas 3">
+        </div>
+        <div class="slide-content">
+            <img src="static/figures/canvases/canvas_export7.jpg" alt="Exploration canvas 4">
+        </div>
+        <div class="slide-content">
+            <img src="static/figures/canvases/canvas_export8.jpg" alt="Exploration canvas 5">
+        </div>
+
+
+    </div>
+
+    <!-- Evaluating Visual Combinations -->
+    <div class="container blog main gray">
+        <h1>Evaluating Visual Combinations</h1>
+        <h2>Why is a new metric needed?</h2>
+        <p class="text">
+            Standard perceptual similarity metrics such as CLIP similarity or DreamSim reward visual similarity to the inputs. This means outputs that simply preserve or insert elements from the inputs score higher than those that transform and recombine them. Such metrics are not designed to measure whether a combination is non-trivial or unique.
+        </p>
+        <h2>What is description complexity?</h2>
+        <p class="text">
+            We observe that trivial combinations can often be explained in a few words ("place object A into scene B"), whereas non-trivial combinations require longer descriptions to articulate what visual qualities were extracted and how they were transformed.
+        </p>
+        <h2>How do we measure it?</h2>
+        <p class="text">
+            We prompt Gemini 2.5 Flash to describe how each output image could be reconstructed from its two source images, and use word count as a proxy for the complexity of the visual relationship. Higher word counts indicate more complex, non-trivial combinations. We also report the percentage of outputs classified as trivial patterns (copy, insertion, split).
+        </p>
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Word Count</th>
+                    <th>Copy</th>
+                    <th>Insertion</th>
+                    <th>Split</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Flux.1 Kontext</td>
+                    <td>23.5 ± 21.4</td>
+                    <td>2.8%</td>
+                    <td>0.3%</td>
+                    <td>85.4%</td>
+                </tr>
+                <tr>
+                    <td>Qwen-Image</td>
+                    <td>37.4 ± 19.2</td>
+                    <td>16.2%</td>
+                    <td>18.9%</td>
+                    <td>10.6%</td>
+                </tr>
+                <tr>
+                    <td>Nano Banana</td>
+                    <td>42.9 ± 15.6</td>
+                    <td>9.1%</td>
+                    <td>19.7%</td>
+                    <td>0.3%</td>
+                </tr>
+                <tr class="highlight">
+                    <td><b>Ours</b></td>
+                    <td><b>54.8 ± 12.5</b></td>
+                    <td><b>2.3%</b></td>
+                    <td><b>0.0%</b></td>
+                    <td><b>1.5%</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="caption">
+            <b>Description complexity comparison.</b>
+        </p>
+        <p class="text">
+            To validate this approach, we conducted a user study where participants classified the relationship between outputs and their input pairs. Description length increases with combination complexity: simple operations like duplication or insertion require fewer words, while texture transfer and other non-canonical relationships demand longer descriptions.
+        </p>
+        <img src="static/figures/user_study_results.png" alt="User study results showing description length increases with combination complexity" style="max-width: 60%; margin: 2vh auto;">
+        <p class="caption">
+            <b>User study results.</b>
+        </p>
+    </div>
+
+    <!-- Results Comparison -->
+    <div class="container blog main">
+        <h1>Results Comparison</h1>
+        <p class="text">
+We compare our method to a set of open-source (Flux.1 Kontext, Qwen-Image) and closed-source (Nano Banana, Reve, ChatGPT) models.
+        </p>
+    </div>
+    <div class="container blog extra-large">
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Inputs</th>
+                    <th>Flux.1 Kontext</th>
+                    <th>Qwen-Image</th>
+                    <th>Nano Banana</th>
+                    <th>Reve</th>
+                    <th>ChatGPT</th>
+                    <th>Ours</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="static/figures/comparisons/food6__nature8/input_1_food6.jpeg" alt="Input 1"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/input_2_nature8.jpeg" alt="Input 2"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/kontext_seed_001.jpeg" alt="Flux.1 Kontext output"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/qwenimage_seed_001.jpeg" alt="Qwen-Image output"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/nanobanana_seed_001.jpeg" alt="Nano Banana output"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/reve_mix1.jpeg" alt="Reve output"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/chatgpt.jpg" alt="Chatgpt output"></td>
+                    <td><img src="static/figures/comparisons/food6__nature8/ours_seed_001.jpeg" alt="Our output"></td>
+                </tr>
+                <tr>
+                    <td><img src="static/figures/comparisons/other1__sea3/other1.jpeg" alt="Input 1"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/sea3.jpeg" alt="Input 2"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/other1__sea3__seed_001_kontext.jpeg" alt="Flux.1 Kontext output"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/other1__sea3__seed_001_qwen.jpeg" alt="Qwen-Image output"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/other1__sea3__seed_001_nano.jpeg" alt="Nano Banana output"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/reve_mix2.jpeg" alt="Reve output"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/chatgpt.jpg" alt="Chatgpt output"></td>
+                    <td><img src="static/figures/comparisons/other1__sea3/other1__sea3__seed_002_ours.jpeg" alt="Our output"></td>
+                </tr>
+                <tr>
+                    <td><img src="static/figures/comparisons/fashion5__other3/fashion5.jpeg" alt="Input 1"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/other3.jpeg" alt="Input 2"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/fashion5__other3__seed_003_kontext.jpeg" alt="Flux.1 Kontext output"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/fashion5__other3__seed_003_qwen.jpeg" alt="Qwen-Image output"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/fashion5__other3__seed_003_nano.jpeg" alt="Nano Banana output"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/reve_mix2.jpeg" alt="Reve output"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/chatgpt.jpg" alt="Chatgpt output"></td>
+                    <td><img src="static/figures/comparisons/fashion5__other3/fashion5__other3__seed_001_ours.jpeg" alt="Our output"></td>
+                </tr>
+                <tr>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/input_1_fashion4.jpeg" alt="Input 1"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/input_2_arch4.jpeg" alt="Input 2"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/kontext_seed_001.jpeg" alt="Flux.1 Kontext output"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/qwenimage_seed_001.jpeg" alt="Qwen-Image output"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/nanobanana_seed_001.jpeg" alt="Nano Banana output"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/reve_mix2.jpeg" alt="Reve output"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/chatgpt.jpg" alt="Chatgpt output"></td>
+                    <td><img src="static/figures/comparisons/fashion4__arch4/ours_seed_001.jpeg" alt="Our output"></td>
+                </tr>
+                <tr>
+                    <td><img src="static/figures/comparisons/nature3__sea7/input_1_nature3.jpeg" alt="Input 1"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/input_2_sea7.jpeg" alt="Input 2"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/kontext_seed_001.jpeg" alt="Flux.1 Kontext output"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/qwenimage_seed_001.jpeg" alt="Qwen-Image output"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/nanobanana_seed_001.jpeg" alt="Nano Banana output"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/reve_mix1.jpeg" alt="Reve output"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/chatgpt.jpg" alt="Chatgpt output"></td>
+                    <td><img src="static/figures/comparisons/nature3__sea7/ours_seed_001.jpeg" alt="Our output"></td>
+                </tr>
+            </tbody>
+        </table>
+         </div>
+        <div class="container blog main">
+        <p class="text">
+Flux.1 Kontext and Qwen-Image tend to preserve inputs or place them side by side without meaningful integration — inserting one object into the other's scene or simply reproducing the inputs.<br>
+Nano Banana produces similar object-level insertions, occasionally transferring some visual qualities but largely relying on scene placement.<br>
+Reve and ChatGPT sometimes generate non-trivial combinations, but also tend to produce scene compositions or overly polished outputs.<br>
+Our method integrates visual qualities from both inputs into unified forms and can surface non-literal connections. Our method builds on Flux.1 Kontext and is fully open source.<br>
+More results are available in the paper.        </p>
+    </div>
+            
+   
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="font-size: small;">
+                This website is built on the modified <a href="https://shikun.io/projects/clarity" style="font-size: small;">Clarity Template</a>.
+            </p>
+        </div>
+    </footer>
+
+    <script src="assets/scripts/carousel.js"></script>
+    <script src="assets/scripts/canvas-demo.js"></script>
+</body>
+</html>
