@@ -35,7 +35,7 @@ uv run generate.py \
 | `--image2` | (required) | Path to the second input image (bottom-right in grid) |
 | `--output-dir` | `outputs/` | Directory for output images |
 | `--guidance-scale` | `4.0` | Higher values = stronger guidance |
-| `--lora-path` | None | Optional LoRA checkpoint (local path, HuggingFace repo, or URL) |
+| `--lora-path` | InspirationSeedsPaper/InspirationSeeds | LoRA checkpoint (local path, HuggingFace repo, or URL) |
 | `--seed` | `1` | Base random seed |
 | `--num-seeds` | `4` | Number of variations to generate |
 
