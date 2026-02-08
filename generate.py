@@ -44,6 +44,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--lora-path",
+        default="InspirationSeedsPaper/InspirationSeeds",
         type=str,
         help="LoRA checkpoint: local path, HuggingFace repo (e.g., 'user/repo'), or URL.",
     )
