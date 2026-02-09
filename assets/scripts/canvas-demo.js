@@ -890,10 +890,30 @@
     // Expose to window for console access
     window.logImagePositions = logImagePositions;
 
+    // Check if hero should stack based on viewport width
+    // Uses a fixed breakpoint derived from testing: at 1350px the intro text
+    // becomes taller than the canvas area in 2-column mode
+    function checkHeroStacking() {
+        const hero = document.getElementById('first-content');
+        if (!hero) return;
+
+        if (window.innerWidth <= 1400) {
+            hero.classList.add('hero-stacked');
+        } else {
+            hero.classList.remove('hero-stacked');
+        }
+    }
+
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCanvas);
+        document.addEventListener('DOMContentLoaded', () => {
+            initCanvas();
+            checkHeroStacking();
+        });
     } else {
         initCanvas();
+        checkHeroStacking();
     }
+
+    window.addEventListener('resize', debounce(checkHeroStacking, 250));
 })();

@@ -917,20 +917,21 @@ pre code {
   }
 }
 
-/* Mobile: stack hero title and demo vertically + fix container padding */
+/* Stack hero when text column is taller than canvas (class toggled by JS) */
+div.container.blog#first-content.hero-stacked div.blog-title {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+div.container.blog#first-content.hero-stacked div.blog-title .blog-intro {
+  padding: 1vh 0 0 0;
+}
+div.container.blog#first-content.hero-stacked {
+  overflow: hidden;
+}
+
 @media screen and (max-width: 769px) {
   .container {
     padding-right: 6vw;
-  }
-  div.container.blog#first-content div.blog-title {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  div.container.blog#first-content div.blog-title .blog-intro {
-    padding: 1vh 0 0 0;
-  }
-  div.container.blog#first-content {
-    overflow: hidden;
   }
 }
 
