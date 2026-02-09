@@ -301,7 +301,7 @@ div.container.blog#first-content {
 
 div.container.blog#first-content div.blog-title {
   display: grid;
-  grid-template-columns: 2fr 3fr !important;
+  grid-template-columns: 2fr 3fr;
   gap: 2rem;
   align-items: center;
 }
@@ -421,7 +421,7 @@ div.container.blog.gray p.caption {
     padding-top: 3vh;
   }
   div.container.blog#first-content div.blog-title {
-    grid-template-columns: 0.6fr 1fr;
+    grid-template-columns: 2fr 3fr;
     column-gap: 2vw;
   }
   div.container.blog#first-content div.blog-title .blog-cover {
@@ -457,7 +457,7 @@ div.container.blog.gray p.caption {
     padding-top: 4vh;
   }
   div.container.blog#first-content div.blog-title {
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 2fr 3fr;
     grid-row: 75vh;
     column-gap: 3vw;
   }
@@ -490,7 +490,7 @@ div.container.blog.gray p.caption {
     padding-top: 6vh;
   }
   div.container.blog#first-content div.blog-title {
-    grid-template-columns: 0.45fr 1fr;
+    grid-template-columns: 2fr 3fr;
     grid-row: 75vh;
     column-gap: 4vw;
   }
@@ -791,17 +791,17 @@ pre code {
 }
 
 .seed-inputs img {
-  width: 100%;
-  height: auto;
+  height: 18vw;
+  width: auto;
+  max-width: 100%;
   border-radius: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .seed-inputs > div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1 1 auto !important;
 }
 
 .seed-inputs .plus {
@@ -827,10 +827,11 @@ pre code {
 
 .seed-label {
   text-align: center;
-  font-size: 0.85em;
+  font-size: 1.1em;
   color: #666;
   margin-bottom: 8px;
   font-family: 'Charter', Georgia, serif;
+  white-space: nowrap;
 }
 
 /* Comparison layout (same format as seed variation) */
@@ -883,8 +884,9 @@ pre code {
   }
 
   .seed-inputs img {
-    width: 100%;
-    height: auto;
+    height: 25vw;
+    width: auto;
+    max-width: 100%;
   }
 
   .comparison-inputs img {
@@ -895,6 +897,40 @@ pre code {
   .seed-outputs,
   .comparison-outputs {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .seed-inputs .seed-label {
+    font-size: 10px;
+  }
+  .seed-inputs {
+    gap: 6px;
+  }
+  .seed-inputs .plus {
+    font-size: 16px;
+  }
+  .container.blog.extra-large {
+    overflow-x: auto;
+  }
+  .comparison-table {
+    min-width: 700px;
+    table-layout: auto;
+  }
+}
+
+/* Mobile: stack hero title and demo vertically + fix container padding */
+@media screen and (max-width: 769px) {
+  .container {
+    padding-right: 6vw;
+  }
+  div.container.blog#first-content div.blog-title {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  div.container.blog#first-content div.blog-title .blog-intro {
+    padding: 1vh 0 0 0;
+  }
+  div.container.blog#first-content {
+    overflow: hidden;
   }
 }
 
@@ -1064,6 +1100,9 @@ pre code {
 
 /* Responsive adjustments */
 @media screen and (max-width: 769px) {
+  #image-selector {
+    flex-wrap: wrap;
+  }
   .selector-image {
     height: 60px;
   }
@@ -1107,7 +1146,8 @@ pre code {
 /* optional responsive: stack on small screens */
 @media (max-width: 900px) {
   .seed-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
   }
-  .seed-grid .seed-label { grid-column: auto !important; }
+  .seed-grid .seed-label { font-size: 14px; }
 }
