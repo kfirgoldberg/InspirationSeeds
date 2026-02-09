@@ -1058,6 +1058,7 @@ pre code {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
+  opacity: 0;
 }
 
 .selector-image {
@@ -1066,7 +1067,7 @@ pre code {
   height: 80px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   border: 3px solid transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 0;

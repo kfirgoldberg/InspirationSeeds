@@ -422,6 +422,43 @@
         render();
     }
 
+    // Update selector to only show images not on canvas
+    function updateSelectorVisibility(animate) {
+        const onCanvasNames = canvasImages
+            .filter(img => !img.isResult)
+            .map(img => img.name);
+        const selectorImages = document.querySelectorAll('.selector-image');
+        selectorImages.forEach(img => {
+            const name = img.dataset.imageName;
+            const shouldHide = onCanvasNames.includes(name);
+            if (shouldHide && img.style.visibility !== 'hidden') {
+                if (animate) {
+                    img.style.opacity = '0';
+                    img.style.transform = 'scale(0.5)';
+                    setTimeout(() => {
+                        img.style.visibility = 'hidden';
+                        img.style.pointerEvents = 'none';
+                        img.style.order = '1';
+                    }, 300);
+                } else {
+                    img.style.transition = 'none';
+                    img.style.opacity = '0';
+                    img.style.visibility = 'hidden';
+                    img.style.pointerEvents = 'none';
+                    img.style.order = '1';
+                    img.offsetHeight;
+                    img.style.transition = '';
+                }
+            } else if (!shouldHide) {
+                img.style.visibility = '';
+                img.style.opacity = '';
+                img.style.transform = '';
+                img.style.pointerEvents = '';
+                img.style.order = '';
+            }
+        });
+    }
+
     // Show compatible images for a given image name
     function showCompatibleImages(imageName, isFromCanvas = false) {
         selectedImage = imageName;
@@ -457,28 +494,15 @@
         render();
     }
 
-    // Image selector click handler
+    // Image selector click handler - single click adds combination with food1
     function onSelectorImageClick(e) {
-        const clickedImg = e.currentTarget;
-        const imageName = clickedImg.dataset.imageName;
-
-        if (selectedImage === imageName) {
-            // Deselect
-            clearSelectionState();
-            return;
+        const imageName = e.currentTarget.dataset.imageName;
+        if (hasCombination('food1', imageName)) {
+            addCombinationToCanvas('food1', imageName).then(() => {
+                updateSelectorVisibility(true);
+            });
         }
-
-        if (selectedImage) {
-            // Second click - try to create combination
-            if (hasCombination(selectedImage, imageName)) {
-                addCombinationToCanvas(selectedImage, imageName);
-            }
-            clearSelectionState();
-        } else {
-            // First click - show compatible images
-            selectedCanvasImage = null;
-            showCompatibleImages(imageName, false);
-        }
+        clearSelectionState();
     }
 
     // Handle click on canvas image
@@ -564,7 +588,7 @@
         if (!img2OnCanvas) imagesToLoad.push(img2Name);
         if (!resultOnCanvas) imagesToLoad.push(resultFilename);
 
-        Promise.all(imagesToLoad.map(name => loadImage(name))).then(() => {
+        return Promise.all(imagesToLoad.map(name => loadImage(name))).then(() => {
             imagesToLoad.forEach((name, index) => {
                 const isResult = name === resultFilename;
                 const xPos = nextX + index * (imgSize + padding);
@@ -612,8 +636,9 @@
             };
         });
 
-        // Clear selection state
+        // Clear selection state and update selector
         clearSelectionState();
+        updateSelectorVisibility();
     }
 
     // Initial layout positions as percentages of canvas dimensions
@@ -674,6 +699,8 @@
             }));
 
             render();
+            updateSelectorVisibility();
+            document.getElementById('image-selector').style.opacity = '1';
         } catch (err) {
             console.error('Failed to load images:', err);
         }
