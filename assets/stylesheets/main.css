@@ -785,15 +785,14 @@ pre code {
 
 .seed-inputs {
   display: flex;
-  align-items: stretch;
+  align-items: flex-end;
   gap: 15px;
   width: 100%;
 }
 
 .seed-inputs img {
-  height: 18vw;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  height: auto;
   border-radius: 4px;
 }
 
@@ -801,7 +800,7 @@ pre code {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1 1 auto !important;
+  min-width: 0;
 }
 
 .seed-inputs .plus {
@@ -883,11 +882,6 @@ pre code {
     gap: 20px;
   }
 
-  .seed-inputs img {
-    height: 25vw;
-    width: auto;
-    max-width: 100%;
-  }
 
   .comparison-inputs img {
     width: 80px;
