@@ -521,7 +521,11 @@
 
             updateSelectorVisibility(true);
             const targetZoom = (zoomLevel === 1.0) ? Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP) : zoomLevel;
-            animateTransition(targetZoom, 60);
+            const hasSea4 = canvasImages.some(img => img.name === 'sea4');
+            const hasArch1 = canvasImages.some(img => img.name === 'arch1');
+            const targetPanX = hasSea4 ? 60 : 0;
+            const targetPanY = hasArch1 ? -30 : 0;
+            animateTransition(targetZoom, targetPanX, targetPanY);
         });
         clearSelectionState();
     }
@@ -635,14 +639,16 @@
         }
     }
 
-    function animateTransition(targetZoom, targetPanX) {
+    function animateTransition(targetZoom, targetPanX, targetPanY) {
         const w = parseFloat(canvas.style.width);
         const h = parseFloat(canvas.style.height);
         const duration = 400;
         const startTime = performance.now();
         const startZoom = zoomLevel;
         const startPanX = panOffset.x;
+        const startPanY = panOffset.y;
         if (targetPanX === undefined) targetPanX = startPanX;
+        if (targetPanY === undefined) targetPanY = startPanY;
 
         // Capture start positions and compute targets from FULL_LAYOUT
         const targets = canvasImages.map(img => {
@@ -660,6 +666,7 @@
             const ease = t * (2 - t); // ease-out quadratic
             zoomLevel = startZoom + (targetZoom - startZoom) * ease;
             panOffset.x = startPanX + (targetPanX - startPanX) * ease;
+            panOffset.y = startPanY + (targetPanY - startPanY) * ease;
             canvasImages.forEach((img, i) => {
                 img.x = targets[i].startX + (targets[i].endX - targets[i].startX) * ease;
                 img.y = targets[i].startY + (targets[i].endY - targets[i].startY) * ease;

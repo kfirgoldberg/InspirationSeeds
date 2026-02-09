@@ -1009,8 +1009,33 @@ pre code {
   top: 10px;
   right: 10px;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
   z-index: 10;
+}
+
+.canvas-controls-row {
+  display: flex;
+  gap: 4px;
+}
+
+.canvas-demo-link {
+  font-size: 13px;
+  color: #353535;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 6px 0;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.canvas-demo-link:hover {
+  background: rgba(255, 255, 255, 1);
 }
 
 .canvas-control-btn {
