@@ -449,12 +449,15 @@
                     img.offsetHeight;
                     img.style.transition = '';
                 }
-            } else if (!shouldHide) {
+            } else if (!shouldHide && img.style.visibility === 'hidden') {
+                img.style.transition = 'none';
                 img.style.visibility = '';
                 img.style.opacity = '';
                 img.style.transform = '';
                 img.style.pointerEvents = '';
                 img.style.order = '';
+                img.offsetHeight;
+                img.style.transition = '';
             }
         });
     }
@@ -497,11 +500,29 @@
     // Image selector click handler - single click adds combination with food1
     function onSelectorImageClick(e) {
         const imageName = e.currentTarget.dataset.imageName;
-        if (hasCombination('food1', imageName)) {
-            addCombinationToCanvas('food1', imageName).then(() => {
-                updateSelectorVisibility(true);
+        const resultName = getResultImage('food1', imageName);
+        if (!resultName) return;
+
+        const w = parseFloat(canvas.style.width);
+        const h = parseFloat(canvas.style.height);
+        const imgSize = Math.min(w, h) * 0.28;
+
+        // Load new images, then add at FULL_LAYOUT positions and animate everything
+        const toLoad = [imageName, resultName].filter(n => !loadedImages[n]);
+        Promise.all(toLoad.map(n => loadImage(n))).then(() => {
+            [imageName, resultName].forEach(name => {
+                if (!canvasImages.find(img => img.name === name)) {
+                    const entry = FULL_LAYOUT.find(e => e.name === name);
+                    if (entry) {
+                        addCanvasImage(name, entry.xPct * w, entry.yPct * h, imgSize, imgSize, entry.isResult);
+                    }
+                }
             });
-        }
+
+            updateSelectorVisibility(true);
+            const targetZoom = (zoomLevel === 1.0) ? Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP) : zoomLevel;
+            animateTransition(targetZoom, 60);
+        });
         clearSelectionState();
     }
 
@@ -614,6 +635,41 @@
         }
     }
 
+    function animateTransition(targetZoom, targetPanX) {
+        const w = parseFloat(canvas.style.width);
+        const h = parseFloat(canvas.style.height);
+        const duration = 400;
+        const startTime = performance.now();
+        const startZoom = zoomLevel;
+        const startPanX = panOffset.x;
+        if (targetPanX === undefined) targetPanX = startPanX;
+
+        // Capture start positions and compute targets from FULL_LAYOUT
+        const targets = canvasImages.map(img => {
+            const entry = FULL_LAYOUT.find(e => e.name === img.name);
+            return {
+                startX: img.x,
+                startY: img.y,
+                endX: entry ? entry.xPct * w : img.x,
+                endY: entry ? entry.yPct * h : img.y
+            };
+        });
+
+        function step(now) {
+            const t = Math.min((now - startTime) / duration, 1);
+            const ease = t * (2 - t); // ease-out quadratic
+            zoomLevel = startZoom + (targetZoom - startZoom) * ease;
+            panOffset.x = startPanX + (targetPanX - startPanX) * ease;
+            canvasImages.forEach((img, i) => {
+                img.x = targets[i].startX + (targets[i].endX - targets[i].startX) * ease;
+                img.y = targets[i].startY + (targets[i].endY - targets[i].startY) * ease;
+            });
+            render();
+            if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
     function resetView() {
         // Reset zoom and pan
         zoomLevel = 1.0;
@@ -649,6 +705,19 @@
         { name: 'fashion5', xPct: 0.45, yPct: 0.65, isResult: false },
         { name: 'food1_nature2_result_2.jpg', xPct: 0.09, yPct: 0.07, isResult: true },
         { name: 'fashion5_food1_result_8.jpg', xPct: 0.70, yPct: 0.39, isResult: true }
+    ];
+
+    // Full layout after all selector images have been added
+    const FULL_LAYOUT = [
+        { name: 'nature2', xPct: 0.48, yPct: 0.17, isResult: false },
+        { name: 'food1_nature2_result_2.jpg', xPct: 0.17, yPct: -0.01, isResult: true },
+        { name: 'fashion5', xPct: 0.5, yPct: 0.54, isResult: false },
+        { name: 'fashion5_food1_result_8.jpg', xPct: 0.72, yPct: 0.36, isResult: true },
+        { name: 'food1', xPct: 0.23, yPct: 0.38, isResult: false },
+        { name: 'sea4', xPct: -0.01, yPct: 0.41, isResult: false },
+        { name: 'arch1', xPct: 0.22, yPct: 0.7, isResult: false },
+        { name: 'arch1_food1_result_2.jpg', xPct: -0.03, yPct: 0.87, isResult: true },
+        { name: 'food1_sea4_result_3.jpg', xPct: -0.23, yPct: 0.1, isResult: true }
     ];
 
     // Initialize the canvas
@@ -731,6 +800,20 @@
         if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
         if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
         if (resetBtn) resetBtn.addEventListener('click', resetView);
+
+        // Debug helper — call dumpCanvasState() in browser console to get current layout
+        window.dumpCanvasState = function() {
+            const w = parseFloat(canvas.style.width);
+            const h = parseFloat(canvas.style.height);
+            const layout = canvasImages.map(img => ({
+                name: img.name,
+                xPct: Math.round(img.x / w * 100) / 100,
+                yPct: Math.round(img.y / h * 100) / 100,
+                isResult: img.isResult
+            }));
+            console.log('INITIAL_LAYOUT:', JSON.stringify(layout, null, 4));
+            console.log('zoomLevel:', zoomLevel);
+        };
 
         // Handle resize
         window.addEventListener('resize', debounce(() => {
