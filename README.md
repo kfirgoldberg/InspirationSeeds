@@ -1,6 +1,7 @@
 # Inspiration Seeds: Learning Non-Literal Visual Combinations for Generative Exploration
 
-### Kfir Goldberg, Elad Richardson, Yael Vinker
+### Kfir Goldberg<sup>1</sup>, Elad Richardson<sup>2</sup>, Yael Vinker<sup>3</sup>
+<sup>1</sup>Bria &nbsp; <sup>2</sup>Runway &nbsp; <sup>3</sup>MIT
 
 <a href="https://arxiv.org/abs/2602.08615"><img src="https://img.shields.io/badge/arXiv-2602.08615-b31b1b.svg" height=20.5></a>
 <a href="https://kfirgoldberg.github.io/InspirationSeeds/"><img src="https://img.shields.io/static/v1?label=Project&message=Website&color=red" height=20.5></a>
