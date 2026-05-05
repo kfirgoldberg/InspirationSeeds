@@ -5,6 +5,8 @@
 
 <a href="https://arxiv.org/abs/2602.08615"><img src="https://img.shields.io/badge/arXiv-2602.08615-b31b1b.svg" height=20.5></a>
 <a href="https://kfirgoldberg.github.io/InspirationSeeds/"><img src="https://img.shields.io/static/v1?label=Project&message=Website&color=red" height=20.5></a>
+<a href="https://huggingface.co/datasets/kfirgold99/Inspiration-Seeds-Benchmark"><img src="https://img.shields.io/badge/HuggingFace-Benchmark-orange?logo=huggingface" height=20.5></a>
+<a href="https://huggingface.co/datasets/kfirgold99/Inspiration-Seeds-Training"><img src="https://img.shields.io/badge/HuggingFace-Training_Data-orange?logo=huggingface" height=20.5></a>
 
 <p align="center">
 <img src="docs/teaser.png" width="800px"/>
