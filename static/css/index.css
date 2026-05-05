@@ -1,0 +1,137 @@
+/* Custom styles for academic paper website */
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.publication-title {
+    font-family: 'Google Sans', sans-serif;
+}
+
+.publication-header {
+    background-color: #f5f5f5;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.publication-author-block {
+    padding-bottom: 1rem;
+}
+
+.author-block {
+    display: inline-block;
+}
+
+.publication-links {
+    margin-top: 1rem;
+}
+
+.link-block {
+    margin: 0.25rem;
+}
+
+.teaser {
+    padding-top: 0;
+}
+
+.hero-body {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.section {
+    padding: 2rem 1.5rem;
+}
+
+.container.is-max-desktop {
+    max-width: 960px;
+}
+
+.content {
+    text-align: justify;
+}
+
+/* Image comparison slider */
+.image-comparison {
+    margin: 2rem 0;
+}
+
+/* Results gallery */
+.results-carousel {
+    overflow: hidden;
+}
+
+.results-carousel .item {
+    margin: 5px;
+    overflow: hidden;
+}
+
+.results-carousel .item img {
+    border-radius: 5px;
+}
+
+/* Method figure */
+.method-image {
+    max-width: 100%;
+    margin: 2rem auto;
+}
+
+/* BibTeX box */
+.bibtex-box {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Footer */
+.footer {
+    padding: 2rem 1.5rem;
+    background-color: #f5f5f5;
+}
+
+.footer .content {
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .publication-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-body {
+        padding: 1rem;
+    }
+}
+
+/* Figure captions */
+.caption {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* Paper links buttons */
+.external-link {
+    margin-bottom: 0.5rem;
+}
+
+/* Academicons */
+.ai {
+    font-size: 1.2rem;
+}
+
+ul {
+  margin-left: 20em;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 0.6em;
+}
