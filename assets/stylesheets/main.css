@@ -327,6 +327,14 @@ div.container.blog#first-content div.blog-title .blog-intro p.affiliations {
   line-height: 1.2;
 }
 
+div.container.blog#first-content div.blog-title .blog-intro p.award {
+  padding: 4px 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #b8860b;
+  line-height: 1.2;
+}
+
 div.container.blog#first-content div.blog-title .blog-intro p.abstract {
   font-family: "Charter", Georgia, serif;
   font-weight: 400;
