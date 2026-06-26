@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kfirgoldberg.github.io/InspirationSeeds/sitemap.xml
